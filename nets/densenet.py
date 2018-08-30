@@ -63,7 +63,7 @@ def densenet(images, num_classes=1001, is_training=False,
 
             #conv1
             end_point = 'Conv1_7'
-            net = slim.conv2d(images,16,[7,7],stride=2,scope = end_point)
+            net = slim.conv2d(images,16,[7,7],stride=2,weights_initializer = trunc_normal(0.001),scope = end_point)
             end_points[end_point] = net
 
             #maxpool
@@ -79,7 +79,7 @@ def densenet(images, num_classes=1001, is_training=False,
             # transition1_1*1
             out1 = reduce_dim(net)
             end_point = 'Transition1_1'
-            net = slim.conv2d(net, out1, [1, 1], scope=end_point)
+            net = slim.conv2d(net, out1, [1, 1],weights_initializer = trunc_normal(0.001), scope=end_point)
             end_points[end_point] = net
 
             # transition1 avgpool
@@ -95,7 +95,7 @@ def densenet(images, num_classes=1001, is_training=False,
             # transition2_1*1
             out2 = reduce_dim(net)
             end_point = 'Transition2_1'
-            net = slim.conv2d(net,out2, [1, 1], scope=end_point)
+            net = slim.conv2d(net,out2, [1, 1],weights_initializer = trunc_normal(0.001), scope=end_point)
             end_points[end_point] = net
 
             # transition2 avgpool
@@ -111,7 +111,7 @@ def densenet(images, num_classes=1001, is_training=False,
             # transition3_1*1
             out3 = reduce_dim(net)
             end_point = 'Transition3_1'
-            net = slim.conv2d(net,out3, [1, 1], scope=end_point)
+            net = slim.conv2d(net,out3, [1, 1],weights_initializer = trunc_normal(0.001), scope=end_point)
             end_points[end_point] = net
 
             # transition3 avgpool
@@ -131,7 +131,7 @@ def densenet(images, num_classes=1001, is_training=False,
 
             #fc
             end_point = 'fc'
-            net = slim.conv2d(net,num_classes,[1,1],activation_fn = None,normalizer_fn = None, scope = end_point)
+            net = slim.conv2d(net,num_classes,[1,1],weights_initializer = trunc_normal(0.001),activation_fn = None,normalizer_fn = None, scope = end_point)
             end_points[end_point] = net
 
             logits = tf.squeeze(net,[1,2],name = 'fc/squeezed')
