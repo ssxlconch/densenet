@@ -128,10 +128,10 @@ def densenet(images, num_classes=1001, is_training=False,
 
             #fc
             end_point = 'fc'
-            net = slim.conv2d(net,num_classes,[1,1],scope = end_point)
+            net = slim.conv2d(net,num_classes,[1,1],activation_fn = None,normalizer_fn = None, scope = end_point)
             end_points[end_point] = net
 
-            logits = tf.squeeze(net,[1,2],name = 'fc/squeezed',activation_fn = None,scope = 'logits')
+            logits = tf.squeeze(net,[1,2],name = 'fc/squeezed')
             end_points['log'] = logits
 
             end_points['Predictions'] = slim.softmax(logits,scope = 'Predictions')
